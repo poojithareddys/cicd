@@ -1,0 +1,31 @@
+{
+"variables": {
+   "input_ami": "",
+   "output_ami": "",
+   "role":""
+  },
+"builders": [{
+    "type": "amazon-ebs",
+    "region": "ap-south-1",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "{{user `input_ami`}}",
+        "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "{{user `output_ami`}}"
+  }
+],
+"provisioners" : [{
+    "type": "shell",
+     "environment_vars": [
+      "ROLENAME={{user `role`}}"
+    ],
+    "script":"provision.sh"
+}]
+}
